@@ -43,7 +43,7 @@ def auto_grad():
 
     x.grad.zero_()
     y = x * x  # y还是关于x的函数
-    u = y.detach()  # 把y设置成为一个常数
+    u = y.detach()  # 把y设置成为一个常数，不用算梯度了，这是一个常数了，相当于从计算图里面提出来了
     z = u * x  # z不就是一个常数乘x吗
     z.sum().backward()
     print(x.grad == u)
