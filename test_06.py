@@ -19,10 +19,28 @@ def load_array(data_arrays, batch_size, is_train=True):
     dataset = data.TensorDataset(*data_arrays)
     return data.DataLoader(dataset, batch_size, shuffle=is_train)
 
+def data_iter(batch_size, features, labels):
+    num_examples = len(features)
+    indices = list(range(num_examples))
+    #随机读取相关的样本
+    random.shuffle(indices)
+    for i in range(0, num_examples, batch_size):
+        batch_indices = torch.tensor(indices[i:min(i + batch_size, num_examples)])
+        yield features[batch_indices], labels[batch_indices]  # yield是一种迭代器形式的return，每一次是从上一次的位置开始return
 
 true_w = torch.tensor([2, -3.4])
 true_b = 4.2
 features, labels = synthetic_data(true_w, true_b, 1000)
+
+"""
+batch_size = 10
+for X, y in data_iter(batch_size, features, labels):
+    print(X, '\n', y)
+    break
+"""
+
+# plt.scatter(features[:, 1].detach().numpy(), labels.detach().numpy(), 1)
+# plt.show()
 
 batch_size = 10  # 如果是剩下的最后一个的不够一个batch，那么一般是直接将最后一个的不满的数量作为一个batch的；\
                  # 当然也有直接扔掉的；\
@@ -51,6 +69,8 @@ for epoch in range(num_epochs):  # epoch 一般是人定，不过多训练点没
         l.backward()  # 反向传播，梯度计算到参数w,b
         # 为啥不用牛顿法，深度学习中的损失函数和优化模型严格数学解没有实际意义；牛顿法非凸优化收敛不到最优解（无约束非线性的优化）
         trainer.step()  # 调用step函数进行模型更新
-    l = loss(net(features), labels)
-    print(f'epoch {epoch + 1}, loss {l:f}')
+    with torch.no_grad():
+        l = loss(net(features), labels)
+        print(f'epoch {epoch + 1}, loss {l:f}')
 
+print()
