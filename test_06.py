@@ -73,4 +73,4 @@ for epoch in range(num_epochs):  # epoch 一般是人定，不过多训练点没
         l = loss(net(features), labels)
         print(f'epoch {epoch + 1}, loss {l:f}')
 
-print()
+
