@@ -105,7 +105,7 @@ if __name__ == '__main__':
     train_iter, test_iter = load_data_fashion_mnist(batch_size, resize=None)
     dropout1, dropout2 = 0.2, 0.5
     # 定义了一个展平层，用来把原来的高维数据第0维度保留，其他的展开成为一个一维的向量
-    net = nn.Sequential(nn.Flatten(), nn.Linear(784, 256), nn.ReLU(), nn.Dropout(dropout1), nn.Linear(256, 10), nn.Softmax(dim=1))  # 多层感知机的模型，添加了dropout
+    net = nn.Sequential(nn.Flatten(), nn.Linear(784, 256), nn.ReLU(), nn.Dropout(dropout1), nn.Linear(256, 10), nn.Softmax(dim=1))  # 多层感知机的模型，添加了dropout，添加了dropout层
     net.apply(init_weights)  # 初始化
 
     # num_inputs, num_outputs, num_hiddens1, num_hiddens2 = 784, 10, 256, 256

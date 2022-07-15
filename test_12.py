@@ -80,7 +80,7 @@ if __name__ == '__main__':
     #for m in net:
     #    print(m)
     trainer = torch.optim.SGD([
-        {"params": net[1].weight,
+        {"params": net[1].weight, # pytorch 里面的weight decay部分
          'weight_decay': 0.001},  # 正则项的部分，权重衰退，参数是对应的λ，一般设置为0.001(e^{-3})，不会设置太大到1.0那种
         {"params": net[1].bias},  # 注意这里只对于w权重做约束，偏置w不考虑进来的
         {"params": net[3].weight,
