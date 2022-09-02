@@ -4,7 +4,7 @@ from torch.nn import functional as F
 
 # pytorch中的module概念
 # 在pytorch中，任何一个层和神经网络都应该是一个module的子类
-#
+# 各种构造网络的方法
 
 class MLP(nn.Module):
     def __int__(self):
@@ -52,3 +52,14 @@ class NestMLP(nn.Module):  # 混合形式的构造方法
         return self.linear(self.net(X))
 
 chimera = nn.Sequential(NestMLP(), nn.Linear(16, 20), FixedHiddenMLP())  # 混合形式
+
+## 参数管理
+net = nn.Sequential(nn.Linear(4, 8), nn.ReLU(), nn.Linear(8, 1))
+X = torch.rand(size=(2, 4))
+print(net[2].state_dict())  # 显示最后一层的参数
+print(net[2].bias)  # 这里显示的是parameter参数
+print(net[2].bias.date)  # 这里显示的是数值本身
+print(net[2].weight.grad)  # 显示梯度gradient
+print(*[(name, param.shape) for name , param in net.named_parameters()])  # 显示里面对应层的weights 和 bias 参数
+print(net.state_dict()['2.bias'].data)  # 直接显示对应的层的参数
+
